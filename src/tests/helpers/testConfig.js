@@ -1,19 +1,10 @@
-import React from 'react';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { BrowserRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
 
-const renderWithRouter = (component, routeConfigs = {}, initialState) => {
-  const route = routeConfigs.route || '/';
-  const history = routeConfigs.history
-    || createMemoryHistory({ initialEntries: [route] });
+const renderWithRouter = (ui, { route = '/' } = {}) => {
+  window.history.pushState({}, 'Test page', route);
 
-  return {
-    ...render(
-      <Router history={ history }>{component}</Router>,
-    ),
-    history,
-  };
+  return render(ui, { wrapper: BrowserRouter });
 };
 
 export default renderWithRouter;

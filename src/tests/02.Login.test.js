@@ -5,10 +5,19 @@ import App from '../App';
 import renderWithRouter from './helpers/testConfig';
 
 describe('2 - Crie uma página de Login:', () => {
-  test('Crie um local para que o usuário insira seu email e senha', () => {
+  test('Crie um local para que o usuário insira seu email', () => {
     renderWithRouter(<App />);
-    // render(<App />);
-    const emailInput = screen.getByRole('input', { name: /email/i });
+    const emailInput = screen.getByRole('textbox', { name: /email/i });
     expect(emailInput).toBeInTheDocument();
+  });
+  test('Crie um local para que o usuário insira seu senha', () => {
+    renderWithRouter(<App />);
+    const passwordInput = screen.getByRole('spinbutton', { name: /senha/i });
+    expect(passwordInput).toBeInTheDocument();
+  });
+  test('Existe um botão', () => {
+    renderWithRouter(<App />);
+    const buttonLogin = screen.getByRole('button');
+    expect(buttonLogin).toBeInTheDocument();
   });
 });
