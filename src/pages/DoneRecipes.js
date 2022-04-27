@@ -1,19 +1,19 @@
 import React from 'react';
 import Header from '../layout/Header';
 import ProfileIcon from '../components/ProfileIcon';
-import SearchIcon from '../components/SearchIcon';
 import Main from '../layout/Main';
+import Footer from '../layout/Footer';
 
-function Foods() {
+function DoneRecipes() {
   return (
     <>
-      <Header title="Foods">
+      <Header title="Done Recipes">
         <ProfileIcon />
-        <SearchIcon />
       </Header>
       <Main />
+      <Footer />
     </>
   );
 }
 
-export default Foods;
+export default DoneRecipes;

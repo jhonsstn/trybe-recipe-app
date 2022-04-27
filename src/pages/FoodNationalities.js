@@ -3,17 +3,19 @@ import Header from '../layout/Header';
 import ProfileIcon from '../components/ProfileIcon';
 import SearchIcon from '../components/SearchIcon';
 import Main from '../layout/Main';
+import Footer from '../layout/Footer';
 
-function Foods() {
+function FoodNationalities() {
   return (
     <>
-      <Header title="Foods">
+      <Header title="Explore Nationalities">
         <ProfileIcon />
         <SearchIcon />
       </Header>
       <Main />
+      <Footer />
     </>
   );
 }
 
-export default Foods;
+export default FoodNationalities;
