@@ -5,10 +5,16 @@ export const Context = createContext();
 
 function AppContext({ children }) {
   const [searchBarStatus, setSearchBarStatus] = useState(false);
+  const [meals, setMeals] = useState([]);
+  const [drinks, setDrinks] = useState([]);
 
   const contextValue = {
     searchBarStatus,
     setSearchBarStatus,
+    meals,
+    setMeals,
+    drinks,
+    setDrinks,
   };
 
   return <Context.Provider value={ contextValue }>{children}</Context.Provider>;

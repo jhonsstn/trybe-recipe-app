@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
+import { Context } from '../context/AppContext';
+import fetchMealsData from '../services/apiHelper';
 
 function SearchBar() {
+  const { setMeals } = useContext(Context);
+  const [search, setSearch] = useState('');
+  const [searchRadio, setSearchRadio] = useState('');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (window.location.pathname === '/foods') {
+      const data = await fetchMealsData(searchRadio, search);
+      setMeals(data);
+    } else if (window.location.pathname === '/drinks') {
+      console.log('drinks');
+    }
+  };
+
   return (
-    <form>
+    <form onSubmit={ handleSubmit }>
       <input
         data-testid="search-input"
         type="text"
-        name="search"
         id="search"
+        value={ search }
+        onChange={ ({ target }) => setSearch(target.value) }
         placeholder="Search Recipe"
       />
       <div className="radio">
@@ -17,6 +34,7 @@ function SearchBar() {
             type="radio"
             id="ingredient"
             name="search-radio"
+            onClick={ ({ target }) => setSearchRadio(target.id) }
           />
           Ingredient
         </label>
@@ -26,6 +44,7 @@ function SearchBar() {
             type="radio"
             id="name"
             name="search-radio"
+            onClick={ ({ target }) => setSearchRadio(target.id) }
           />
           Name
         </label>
@@ -35,6 +54,7 @@ function SearchBar() {
             type="radio"
             id="first-letter"
             name="search-radio"
+            onClick={ ({ target }) => setSearchRadio(target.id) }
           />
           First Letter
         </label>
