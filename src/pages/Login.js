@@ -57,11 +57,7 @@ function Login() {
           onChange={ ({ target }) => setPassword(target.value) }
         />
       </label>
-      <button
-        data-testid="login-submit-btn"
-        type="submit"
-        disabled={ btnStatus }
-      >
+      <button data-testid="login-submit-btn" type="submit" disabled={ btnStatus }>
         Login
       </button>
     </form>

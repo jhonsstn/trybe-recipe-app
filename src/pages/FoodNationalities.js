@@ -3,13 +3,13 @@ import Header from '../components/Header';
 import ProfileIcon from '../components/ProfileIcon';
 import SearchIcon from '../components/SearchIcon';
 
-function Foods() {
+function FoodNationalities() {
   return (
-    <Header title="Foods">
+    <Header title="Explore Nationalities">
       <ProfileIcon />
       <SearchIcon />
     </Header>
   );
 }
 
-export default Foods;
+export default FoodNationalities;

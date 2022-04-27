@@ -1,10 +1,15 @@
 import PropTypes from 'prop-types';
-import React, { createContext } from 'react';
+import React, { useState, createContext } from 'react';
 
 export const Context = createContext();
 
 function AppContext({ children }) {
-  const contextValue = {};
+  const [searchBarStatus, setSearchBarStatus] = useState(false);
+
+  const contextValue = {
+    searchBarStatus,
+    setSearchBarStatus,
+  };
 
   return <Context.Provider value={ contextValue }>{children}</Context.Provider>;
 }

@@ -1,15 +1,13 @@
 import React from 'react';
 import Header from '../components/Header';
 import ProfileIcon from '../components/ProfileIcon';
-import SearchIcon from '../components/SearchIcon';
 
-function Foods() {
+function FoodIngredients() {
   return (
-    <Header title="Foods">
+    <Header title="Explore Ingredients">
       <ProfileIcon />
-      <SearchIcon />
     </Header>
   );
 }
 
-export default Foods;
+export default FoodIngredients;
