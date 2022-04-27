@@ -11,10 +11,8 @@ function SearchBar() {
     event.preventDefault();
     const data = await fetchData(searchRadio, search, window.location.pathname);
     if (window.location.pathname === '/foods') {
-      // console.log(data);
       setMeals(data);
     } else {
-      // console.log(data);
       setDrinks(data);
     }
   };
