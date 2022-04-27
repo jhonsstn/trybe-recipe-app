@@ -1,19 +1,21 @@
 import React, { useState, useContext } from 'react';
 import { Context } from '../context/AppContext';
-import fetchMealsData from '../services/apiHelper';
+import fetchData from '../services/apiHelper';
 
 function SearchBar() {
-  const { setMeals } = useContext(Context);
+  const { setMeals, setDrinks } = useContext(Context);
   const [search, setSearch] = useState('');
   const [searchRadio, setSearchRadio] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const data = await fetchData(searchRadio, search, window.location.pathname);
     if (window.location.pathname === '/foods') {
-      const data = await fetchMealsData(searchRadio, search);
+      // console.log(data);
       setMeals(data);
-    } else if (window.location.pathname === '/drinks') {
-      console.log('drinks');
+    } else {
+      // console.log(data);
+      setDrinks(data);
     }
   };
 
