@@ -1,11 +1,7 @@
 import React from 'react';
 
 function FoodDetails() {
-  return (
-    <>
-      Details
-    </>
-  );
+  return <div />;
 }
 
 export default FoodDetails;
