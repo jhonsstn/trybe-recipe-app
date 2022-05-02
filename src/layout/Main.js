@@ -1,14 +1,26 @@
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
+import Categories from '../components/Categories';
 import SearchBar from '../components/SearchBar';
 import { Context } from '../context/AppContext';
 
 function Main({ children }) {
   const { searchBarStatus } = useContext(Context);
+  const { pathname } = window.location;
+
+  const renderSearchBar = () => {
+    if (searchBarStatus) return <SearchBar />;
+  };
+
+  const renderCategories = () => {
+    if (!searchBarStatus && pathname !== '/explore') return <Categories />;
+  };
+
   return (
     <main>
-      {searchBarStatus && <SearchBar />}
-      { children }
+      {renderSearchBar()}
+      {renderCategories()}
+      {children}
     </main>
   );
 }

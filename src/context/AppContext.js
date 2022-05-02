@@ -7,6 +7,7 @@ function AppContext({ children }) {
   const [searchBarStatus, setSearchBarStatus] = useState(false);
   const [meals, setMeals] = useState([]);
   const [drinks, setDrinks] = useState([]);
+  const [category, setCategory] = useState({});
 
   const contextValue = {
     searchBarStatus,
@@ -15,6 +16,8 @@ function AppContext({ children }) {
     setMeals,
     drinks,
     setDrinks,
+    category,
+    setCategory,
   };
 
   return <Context.Provider value={ contextValue }>{children}</Context.Provider>;
