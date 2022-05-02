@@ -9,8 +9,9 @@ function SearchBar() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = await fetchData(searchRadio, search, window.location.pathname);
-    if (window.location.pathname === '/foods') {
+    const path = window.location.pathname;
+    const data = await fetchData(searchRadio, search, path);
+    if (path === '/foods') {
       setMeals(data);
     } else {
       setDrinks(data);

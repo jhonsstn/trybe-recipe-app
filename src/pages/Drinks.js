@@ -1,14 +1,20 @@
 import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../layout/Header';
-import ProfileButton from '../components/ProfileButton';
-import SearchButton from '../components/SearchButton';
 import Main from '../layout/Main';
 import Footer from '../layout/Footer';
 import { Context } from '../context/AppContext';
+import fetchData from '../services/apiHelper';
 
 function Drinks({ history }) {
-  const { drinks } = useContext(Context);
+  const { drinks, setDrinks } = useContext(Context);
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    fetchData('name', '', path).then((data) => setDrinks(data));
+  }, [setDrinks]);
+
   const verifyDrinks = () => {
     if (drinks === null) {
       return global.alert(
@@ -21,10 +27,7 @@ function Drinks({ history }) {
   };
   return (
     <>
-      <Header title="Drinks">
-        <ProfileButton />
-        <SearchButton />
-      </Header>
+      <Header title="Drinks" />
       <Main>
         {verifyDrinks()}
         {drinks
@@ -32,14 +35,17 @@ function Drinks({ history }) {
             const ELEVEN = 11;
             if (index <= ELEVEN) {
               return (
-                <div key={ index } data-testid={ `${index}-recipe-card` }>
-                  <img
-                    data-testid={ `${index}-card-img` }
-                    src={ item.strDrinkThumb }
-                    alt="imagem da receita"
-                  />
-                  <p data-testid={ `${index}-card-name` }>{item.strDrink}</p>
-                </div>
+                <Link key={ index } to={ `/drinks/${item.idDrink}` }>
+                  <div data-testid={ `${index}-recipe-card` }>
+                    <img
+                      data-testid={ `${index}-card-img` }
+                      src={ item.strDrinkThumb }
+                      alt="imagem da receita"
+                      width="150px"
+                    />
+                    <p data-testid={ `${index}-card-name` }>{item.strDrink}</p>
+                  </div>
+                </Link>
               );
             }
 
