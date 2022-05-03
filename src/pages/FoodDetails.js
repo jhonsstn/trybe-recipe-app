@@ -23,10 +23,12 @@ function FoodDetails() {
   }, []);
 
   const arrIngredients = [];
+  const arrMeasure = [];
   const TWENTY = 20;
   for (let index = 1; index < TWENTY; index += 1) {
     if (food[`strIngredient${index}`] !== '') {
       arrIngredients.push(food[`strIngredient${index}`]);
+      arrMeasure.push(food[`strMeasure${index}`]);
     }
   }
 
@@ -39,16 +41,12 @@ function FoodDetails() {
       />
       <h1 data-testid="recipe-title">{food.strMeal}</h1>
       <p data-testid="recipe-category">{food.strCategory}</p>
-      <img src={ shareIcon } alt="share-button" data-testid="share-btn" />
-      <img
-        src={ blackHeartIcon }
-        alt="favorite-button"
-        data-testid="favorite-btn"
-      />
+
+      <p>Ingredients</p>
       <ul>
         {arrIngredients.map((ingredient, index) => (
           <li data-testid={ `${index}-ingredient-name-and-measure` } key={ index }>
-            {ingredient}
+            {`${ingredient} - ${arrMeasure[index]}`}
           </li>
         ))}
       </ul>
@@ -63,19 +61,43 @@ function FoodDetails() {
         // allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       />
-      {recomendations.map((recomendation, index) => {
-        const FIVE = 5;
-        if (index <= FIVE) {
-          return (
-            <div key={ index } data-testid={ `${index}-recomendation-card` }>
-              {recomendation.strDrink}
-            </div>
-          );
-        }
-        return null;
-      })}
-      <button type="button" data-testid="start-recipe-btn">
-        Iniciar Receita
+      <div style={ { display: 'flex', maxWidth: '350px', overflowY: 'scroll' } }>
+        {recomendations.map((recomendation, index) => {
+          const FIVE = 5;
+          if (index <= FIVE) {
+            return (
+              <div
+                style={ { maxWidth: '180px' } }
+                key={ index }
+                data-testid={ `${index}-recomendation-card` }
+              >
+                <img
+                  width="180px"
+                  src={ recomendation.strDrinkThumb }
+                  alt={ recomendation.strDrink }
+                />
+                <p>{recomendation.strCategory}</p>
+                <h3 data-testid={ `${index}-recomendation-title` }>
+                  {recomendation.strDrink}
+                </h3>
+              </div>
+            );
+          }
+          return null;
+        })}
+      </div>
+      <img src={ shareIcon } alt="share-button" data-testid="share-btn" />
+      <img
+        src={ blackHeartIcon }
+        alt="favorite-button"
+        data-testid="favorite-btn"
+      />
+      <button
+        type="button"
+        data-testid="start-recipe-btn"
+        style={ { position: 'fixed', bottom: '0px' } }
+      >
+        Start Recipe
       </button>
     </div>
   );
