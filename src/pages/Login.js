@@ -6,11 +6,36 @@ function Login({ history }) {
   const [password, setPassword] = useState('');
   const [btnStatus, setBtnStatus] = useState(true);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const progressStatus = () => {
+    if (!localStorage.getItem('inProgressRecipes')) {
+      const inProgressRecipes = {
+        cocktails: {},
+        meals: {},
+      };
+      localStorage.setItem(
+        'inProgressRecipes',
+        JSON.stringify(inProgressRecipes),
+      );
+    }
+  };
+
+  const doneRecipes = () => {
+    if (!localStorage.getItem('doneRecipes')) {
+      localStorage.setItem('doneRecipes', JSON.stringify([{}]));
+    }
+  };
+
+  const localStorageSetup = () => {
     localStorage.setItem('mealsToken', '1');
     localStorage.setItem('cocktailsToken', '1');
     localStorage.setItem('user', JSON.stringify({ email }));
+    doneRecipes();
+    progressStatus();
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    localStorageSetup();
     history.push('/foods');
   };
 

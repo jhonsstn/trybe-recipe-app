@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 function FoodDetails() {
   const { foodId } = useParams();
+  const history = useHistory();
   const [food, setFood] = useState({});
-  const [recomendations, setRecomendations] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
 
   useEffect(() => {
     const URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${foodId}`;
@@ -19,29 +20,57 @@ function FoodDetails() {
     const recUrl = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
     fetch(recUrl)
       .then((response) => response.json())
-      .then((data) => setRecomendations(data.drinks));
+      .then((data) => setRecommendations(data.drinks));
   }, []);
 
   const arrIngredients = [];
   const arrMeasure = [];
   const TWENTY = 20;
   for (let index = 1; index < TWENTY; index += 1) {
-    if (food[`strIngredient${index}`] !== '') {
+    if (
+      food[`strIngredient${index}`] !== ''
+      && food[`strIngredient${index}`] !== null
+    ) {
       arrIngredients.push(food[`strIngredient${index}`]);
       arrMeasure.push(food[`strMeasure${index}`]);
     }
   }
 
+  const isDone = () => {
+    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+    const isRecipeDone = doneRecipes?.some((recipe) => recipe.id === foodId);
+    return !isRecipeDone;
+  };
+
+  const isInProgress = () => {
+    const inProgressRecipes = JSON.parse(
+      localStorage.getItem('inProgressRecipes'),
+    );
+    if (inProgressRecipes) {
+      if (Object.keys(inProgressRecipes.meals).includes(foodId)) {
+        return false;
+      }
+      return true;
+    }
+    return true;
+  };
+
   return (
     <div>
       <img
+        width="100%"
         data-testid="recipe-photo"
         src={ food.strMealThumb }
         alt={ food.idMeal }
       />
       <h1 data-testid="recipe-title">{food.strMeal}</h1>
       <p data-testid="recipe-category">{food.strCategory}</p>
-
+      <img src={ shareIcon } alt="share-button" data-testid="share-btn" />
+      <img
+        src={ blackHeartIcon }
+        alt="favorite-button"
+        data-testid="favorite-btn"
+      />
       <p>Ingredients</p>
       <ul>
         {arrIngredients.map((ingredient, index) => (
@@ -52,33 +81,32 @@ function FoodDetails() {
       </ul>
       <p data-testid="instructions">{food.strInstructions}</p>
       <iframe
-        width="560"
-        height="315"
+        width="100%"
+        height="230px"
         src={ food.strYoutube?.replace('watch?v=', 'embed/') }
         title="YouTube video player"
         frameBorder="0"
         data-testid="video"
-        // allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       />
-      <div style={ { display: 'flex', maxWidth: '350px', overflowY: 'scroll' } }>
-        {recomendations.map((recomendation, index) => {
+      <div style={ { display: 'flex', overflowY: 'scroll' } }>
+        {recommendations.map((recommendation, index) => {
           const FIVE = 5;
           if (index <= FIVE) {
             return (
               <div
-                style={ { maxWidth: '180px' } }
+                style={ { width: '180px' } }
                 key={ index }
                 data-testid={ `${index}-recomendation-card` }
               >
                 <img
-                  width="180px"
-                  src={ recomendation.strDrinkThumb }
-                  alt={ recomendation.strDrink }
+                  style={ { width: '180px', height: '180px' } }
+                  src={ recommendation.strDrinkThumb }
+                  alt={ recommendation.strDrink }
                 />
-                <p>{recomendation.strCategory}</p>
+                <p>{recommendation.strCategory}</p>
                 <h3 data-testid={ `${index}-recomendation-title` }>
-                  {recomendation.strDrink}
+                  {recommendation.strDrink}
                 </h3>
               </div>
             );
@@ -86,19 +114,17 @@ function FoodDetails() {
           return null;
         })}
       </div>
-      <img src={ shareIcon } alt="share-button" data-testid="share-btn" />
-      <img
-        src={ blackHeartIcon }
-        alt="favorite-button"
-        data-testid="favorite-btn"
-      />
-      <button
-        type="button"
-        data-testid="start-recipe-btn"
-        style={ { position: 'fixed', bottom: '0px' } }
-      >
-        Start Recipe
-      </button>
+
+      {isDone() && (
+        <button
+          type="button"
+          data-testid="start-recipe-btn"
+          style={ { position: 'fixed', bottom: '0px' } }
+          onClick={ () => history.push(`/foods/${foodId}/in-progress`) }
+        >
+          {isInProgress() ? 'Start Recipe' : 'Continue Recipe'}
+        </button>
+      )}
     </div>
   );
 }

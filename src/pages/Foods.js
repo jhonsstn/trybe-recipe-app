@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { Context } from '../context/AppContext';
 import Header from '../layout/Header';
 import Main from '../layout/Main';
 import Footer from '../layout/Footer';
 import fetchData from '../services/apiHelper';
+import FoodRecipeCard from '../components/FoodRecipeCard';
 
 function Foods({ history }) {
   const { meals, setMeals, searchBarStatus } = useContext(Context);
@@ -34,19 +34,7 @@ function Foods({ history }) {
           && meals.map((item, index) => {
             const ELEVEN = 11;
             if (index <= ELEVEN) {
-              return (
-                <Link key={ index } to={ `/foods/${item.idMeal}` }>
-                  <div data-testid={ `${index}-recipe-card` }>
-                    <img
-                      data-testid={ `${index}-card-img` }
-                      src={ item.strMealThumb }
-                      alt="imagem da receita"
-                      width="150px"
-                    />
-                    <p data-testid={ `${index}-card-name` }>{item.strMeal}</p>
-                  </div>
-                </Link>
-              );
+              return <FoodRecipeCard key={ index } item={ item } index={ index } />;
             }
             return null;
           })}
