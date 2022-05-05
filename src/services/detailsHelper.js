@@ -22,11 +22,8 @@ const removeRecipe = (recipeId, setFavorite) => {
       recipeIndex = index;
     }
   });
-  const recipeToRemove = favoriteRecipes.slice(recipeIndex, recipeIndex + 1);
-  const newFavoriteRecipes = favoriteRecipes.filter(
-    (meal) => meal.id !== recipeToRemove[0].id,
-  );
-  localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
+  favoriteRecipes.splice(recipeIndex, 1);
+  localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
   setFavorite(false);
 };
 
@@ -55,5 +52,45 @@ export const toggleFavorite = (recipeId, recipeList, id, setFavorite) => {
       console.log('ali');
       insertRecipe(recipeList, id, setFavorite);
     }
+  }
+};
+
+const getIndex = (array, ingredient) => {
+  let ingredientIndex = 0;
+  for (let index = 0; index < array.length; index += 1) {
+    if (array[index] === ingredient) {
+      ingredientIndex = index;
+    }
+  }
+  return ingredientIndex;
+};
+
+export const toggleIngredients = (ingredient, recipeId) => {
+  const inProgressRecipes = JSON.parse(
+    localStorage.getItem('inProgressRecipes'),
+  );
+  if (inProgressRecipes.cocktails[recipeId]) {
+    if (inProgressRecipes.cocktails[recipeId].includes(ingredient)) {
+      const index = getIndex(inProgressRecipes.cocktails[recipeId], ingredient);
+      inProgressRecipes.cocktails[recipeId].splice(index, 1);
+      console.log(inProgressRecipes);
+      localStorage.setItem(
+        'inProgressRecipes',
+        JSON.stringify(inProgressRecipes),
+      );
+    } else {
+      inProgressRecipes.cocktails[recipeId].push(ingredient);
+      localStorage.setItem(
+        'inProgressRecipes',
+        JSON.stringify(inProgressRecipes),
+      );
+    }
+  } else {
+    inProgressRecipes.cocktails[recipeId] = [];
+    inProgressRecipes.cocktails[recipeId].push(ingredient);
+    localStorage.setItem(
+      'inProgressRecipes',
+      JSON.stringify(inProgressRecipes),
+    );
   }
 };
