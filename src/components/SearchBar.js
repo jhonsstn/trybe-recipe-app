@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Context } from '../context/AppContext';
-import fetchData from '../services/apiHelper';
+import { fetchData } from '../services/apiHelper';
 
 function SearchBar() {
   const { setMeals, setDrinks } = useContext(Context);

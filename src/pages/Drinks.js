@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { useContext, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import Header from '../layout/Header';
 import Main from '../layout/Main';
 import Footer from '../layout/Footer';
 import { Context } from '../context/AppContext';
-import fetchData from '../services/apiHelper';
+import { fetchData } from '../services/apiHelper';
+import DrinkRecipeCard from '../components/DrinkRacipeCard';
 
 function Drinks({ history }) {
   const { drinks, setDrinks } = useContext(Context);
@@ -34,19 +34,7 @@ function Drinks({ history }) {
           && drinks.map((item, index) => {
             const ELEVEN = 11;
             if (index <= ELEVEN) {
-              return (
-                <Link key={ index } to={ `/drinks/${item.idDrink}` }>
-                  <div data-testid={ `${index}-recipe-card` }>
-                    <img
-                      data-testid={ `${index}-card-img` }
-                      src={ item.strDrinkThumb }
-                      alt="imagem da receita"
-                      width="150px"
-                    />
-                    <p data-testid={ `${index}-card-name` }>{item.strDrink}</p>
-                  </div>
-                </Link>
-              );
+              return <DrinkRecipeCard key={ index } item={ item } index={ index } />;
             }
 
             return null;
