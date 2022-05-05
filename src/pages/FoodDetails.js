@@ -1,40 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import shareIcon from '../images/shareIcon.svg';
-import blackHeartIcon from '../images/blackHeartIcon.svg';
+import ShareButton from '../components/ShareButton';
+import WhiteHeartButton from '../components/WhiteHeartButton';
+import BlackHeartButton from '../components/BlackHeartButton';
+import { ingredientList, toggleFavorite } from '../services/detailsHelper';
+import { fetchRecipes, fetchRecommendations } from '../services/apiHelper';
 
 function FoodDetails() {
   const { foodId } = useParams();
   const history = useHistory();
   const [food, setFood] = useState({});
   const [recommendations, setRecommendations] = useState([]);
+  const [share, setShare] = useState(false);
+  const [favorite, setFavorite] = useState(false);
 
   useEffect(() => {
-    const URL = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${foodId}`;
-    fetch(URL)
-      .then((response) => response.json())
-      .then((data) => setFood(data.meals[0]));
+    fetchRecipes(foodId, 'meals').then((meal) => setFood(meal));
+    fetchRecommendations('drinks').then((cocktail) => setRecommendations(cocktail));
   }, [foodId]);
 
   useEffect(() => {
-    const recUrl = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-    fetch(recUrl)
-      .then((response) => response.json())
-      .then((data) => setRecommendations(data.drinks));
-  }, []);
+    const favoriteFoods = JSON.parse(localStorage.getItem('favoriteRecipes'));
 
-  const arrIngredients = [];
-  const arrMeasure = [];
-  const TWENTY = 20;
-  for (let index = 1; index < TWENTY; index += 1) {
-    if (
-      food[`strIngredient${index}`] !== ''
-      && food[`strIngredient${index}`] !== null
-    ) {
-      arrIngredients.push(food[`strIngredient${index}`]);
-      arrMeasure.push(food[`strMeasure${index}`]);
+    if (favoriteFoods) {
+      const heart = favoriteFoods.some((item) => item.id === foodId);
+      setFavorite(heart);
     }
-  }
+  }, [foodId]);
+
+  const TWENTY = 20;
+  const [ingredients, measures] = ingredientList(TWENTY, food);
 
   const isDone = () => {
     const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
@@ -55,6 +50,12 @@ function FoodDetails() {
     return true;
   };
 
+  const shareButton = async () => {
+    await navigator.clipboard.writeText(window.location.href);
+
+    setShare(true);
+  };
+
   return (
     <div>
       <img
@@ -63,19 +64,28 @@ function FoodDetails() {
         src={ food.strMealThumb }
         alt={ food.idMeal }
       />
-      <h1 data-testid="recipe-title">{food.strMeal}</h1>
+      <div style={ { display: 'flex' } }>
+        <h1 data-testid="recipe-title">{food.strMeal}</h1>
+        <div>
+          <button type="button" onClick={ shareButton }>
+            <ShareButton />
+          </button>
+          {share && <p>Link copied!</p>}
+        </div>
+        <button
+          type="button"
+          onClick={ () => toggleFavorite(foodId, food, 'meal', setFavorite) }
+        >
+          {favorite ? <BlackHeartButton /> : <WhiteHeartButton />}
+        </button>
+      </div>
       <p data-testid="recipe-category">{food.strCategory}</p>
-      <img src={ shareIcon } alt="share-button" data-testid="share-btn" />
-      <img
-        src={ blackHeartIcon }
-        alt="favorite-button"
-        data-testid="favorite-btn"
-      />
+
       <p>Ingredients</p>
       <ul>
-        {arrIngredients.map((ingredient, index) => (
+        {ingredients.map((ingredient, index) => (
           <li data-testid={ `${index}-ingredient-name-and-measure` } key={ index }>
-            {`${ingredient} - ${arrMeasure[index]}`}
+            {`${ingredient} - ${measures[index]}`}
           </li>
         ))}
       </ul>

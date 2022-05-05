@@ -1,4 +1,4 @@
-const fetchData = async (id, value, path) => {
+export const fetchData = async (id, value, path) => {
   let URL = '';
   if (id === 'ingredient') {
     URL = `https://www.${
@@ -28,4 +28,20 @@ const fetchData = async (id, value, path) => {
   return data.drinks;
 };
 
-export default fetchData;
+export const fetchRecipes = async (recipeId, recipeType) => {
+  const URL = `https://www.${
+    recipeType === 'meals' ? 'themealdb' : 'thecocktaildb'
+  }.com/api/json/v1/1/lookup.php?i=${recipeId}`;
+  const response = await fetch(URL);
+  const data = await response.json();
+  return data[recipeType][0];
+};
+
+export const fetchRecommendations = async (recipeType) => {
+  const recUrl = `https://www.${
+    recipeType === 'meals' ? 'themealdb' : 'thecocktaildb'
+  }.com/api/json/v1/1/search.php?s=`;
+  const response = await fetch(recUrl);
+  const data = await response.json();
+  return data[recipeType];
+};

@@ -4,7 +4,7 @@ import Header from '../layout/Header';
 import Main from '../layout/Main';
 import Footer from '../layout/Footer';
 import { Context } from '../context/AppContext';
-import fetchData from '../services/apiHelper';
+import { fetchData } from '../services/apiHelper';
 import DrinkRecipeCard from '../components/DrinkRacipeCard';
 
 function Drinks({ history }) {

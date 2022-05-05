@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useContext } from 'react';
 import { Context } from '../context/AppContext';
-import fetchData from '../services/apiHelper';
+import { fetchData } from '../services/apiHelper';
 
 function Button({ strCategory }) {
   const { setMeals, setDrinks, category, setCategory } = useContext(Context);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import fetchData from '../services/apiHelper';
+import { fetchData } from '../services/apiHelper';
 
 import CategoryButton from './CategoryButton';
 import { Context } from '../context/AppContext';
