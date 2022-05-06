@@ -61,7 +61,7 @@ function Button({ strCategory }) {
       type="button"
       onClick={ () => setCategoryMeals(strCategory) }
     >
-      {`${strCategory} ${category[strCategory]}`}
+      {strCategory}
     </button>
   );
 }

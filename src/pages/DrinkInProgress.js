@@ -1,26 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import WhiteHeartButton from '../components/WhiteHeartButton';
 import ShareButton from '../components/ShareButton';
-import {
-  ingredientList,
-  toggleFavorite,
-  toggleIngredients,
-} from '../services/detailsHelper';
-import { fetchRecipes, fetchRecommendations } from '../services/apiHelper';
+import { ingredientList, toggleFavorite } from '../services/detailsHelper';
+import { fetchRecipes } from '../services/apiHelper';
 import BlackHeartButton from '../components/BlackHeartButton';
+import IngredientCheckbox from '../components/IngredientCheckbox';
+import Loading from '../components/Loading';
 
 function DrinkInProgress() {
   const { drinkId } = useParams();
-  const history = useHistory();
   const [drink, setDrink] = useState({});
-  const [recommendations, setRecommendations] = useState([]);
   const [share, setShare] = useState(false);
   const [favorite, setFavorite] = useState(false);
+  const [ingredients, setIngredients] = useState([]);
+  const [measures, setMeasures] = useState([]);
 
   useEffect(() => {
-    fetchRecipes(drinkId, 'drinks').then((cocktail) => setDrink(cocktail));
-    fetchRecommendations('meals').then((meal) => setRecommendations(meal));
+    const FIFTEEN = 15;
+    fetchRecipes(drinkId, 'drinks')
+      .then((cocktail) => {
+        setDrink(cocktail);
+        return ingredientList(FIFTEEN, cocktail);
+      })
+      .then(([allIngredients, allMeasures]) => {
+        setIngredients(allIngredients);
+        setMeasures(allMeasures);
+      });
   }, [drinkId]);
 
   useEffect(() => {
@@ -31,15 +37,6 @@ function DrinkInProgress() {
       setFavorite(heart);
     }
   }, [drinkId]);
-
-  const isDone = () => {
-    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
-    const isRecipeDone = doneRecipes?.some((recipe) => recipe.id === drinkId);
-    return !isRecipeDone;
-  };
-
-  const FIFTEEN = 15;
-  const [ingredients, measures] = ingredientList(FIFTEEN, drink);
 
   const shareButton = async () => {
     const recipeLink = window.location.href.split('/i')[0];
@@ -80,61 +77,33 @@ function DrinkInProgress() {
 
       <p>Ingredients</p>
       <div>
-        {ingredients.map((ingredient, index) => (
-          <label
-            htmlFor={ `${index}-checkbox-ingredient` }
-            key={ index }
-            data-testid={ `${index}-ingredient-step` }
-            style={ { textDecoration: 'none solid black' } }
-          >
-            <input
-              id={ `${index}-checkbox-ingredient` }
-              type="checkbox"
-              onChange={ () => toggleIngredients(ingredient, drinkId) }
-            />
-            {`${ingredient} - ${measures[index]}`}
-          </label>
-        ))}
+        {!ingredients ? (
+          <Loading />
+        ) : (
+          ingredients.map((ingredient, index) => {
+            console.log(ingredient);
+            return (
+              <IngredientCheckbox
+                key={ index }
+                index={ index }
+                ingredient={ ingredient }
+                measures={ measures }
+                recipeId={ drinkId }
+                id="drink"
+              />
+            );
+          })
+        )}
       </div>
       <p data-testid="instructions">{drink.strInstructions}</p>
-      <div style={ { display: 'flex', overflowY: 'scroll' } }>
-        {recommendations.map((recommendation, index) => {
-          const FIVE = 5;
-          if (index <= FIVE) {
-            return (
-              <div
-                style={ { width: '180px' } }
-                key={ index }
-                data-testid={ `${index}-recomendation-card` }
-              >
-                <img
-                  style={ { width: '180px', height: '180px' } }
-                  src={ recommendation.strMealThumb }
-                  alt={ recommendation.strMeal }
-                />
-                <p>{recommendation.strCategory}</p>
-                <h3 data-testid={ `${index}-recomendation-title` }>
-                  {recommendation.strMeal}
-                </h3>
-              </div>
-            );
-          }
 
-          return null;
-        })}
-      </div>
-
-      {isDone() && (
-        <button
-          type="button"
-          data-testid="finish-recipe-btn"
-          style={ { position: 'fixed', bottom: '0px' } }
-          onClick={ () => history.push(`/drinks/${drinkId}/done-recipes`) }
-        >
-          {/* {isInProgress() ? 'Start Recipe' : 'Continue Recipe'} */}
-          Finish Recipe
-        </button>
-      )}
+      <button
+        type="button"
+        data-testid="finish-recipe-btn"
+        style={ { position: 'fixed', bottom: '0px' } }
+      >
+        Finish Recipe
+      </button>
     </div>
   );
 }
