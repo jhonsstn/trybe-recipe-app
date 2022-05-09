@@ -5,6 +5,7 @@ import WhiteHeartButton from '../components/WhiteHeartButton';
 import BlackHeartButton from '../components/BlackHeartButton';
 import { ingredientList, toggleFavorite } from '../services/detailsHelper';
 import { fetchRecipes, fetchRecommendations } from '../services/apiHelper';
+import Loading from '../components/Loading';
 
 function FoodDetails() {
   const { foodId } = useParams();
@@ -13,11 +14,23 @@ function FoodDetails() {
   const [recommendations, setRecommendations] = useState([]);
   const [share, setShare] = useState(false);
   const [favorite, setFavorite] = useState(false);
+  const [ingredients, setIngredients] = useState([]);
+  const [measures, setMeasures] = useState([]);
 
   useEffect(() => {
-    fetchRecipes(foodId, 'meals').then((meal) => setFood(meal));
+    const TWENTY = 20;
+    fetchRecipes(foodId, 'meals')
+      .then((meal) => {
+        setFood(meal);
+        return ingredientList(TWENTY, meal);
+      })
+      .then(([allIngredients, allMeasures]) => {
+        setIngredients(allIngredients);
+        setMeasures(allMeasures);
+      });
+
     fetchRecommendations('drinks').then((cocktail) => setRecommendations(cocktail));
-  }, [foodId]);
+  }, [foodId, food]);
 
   useEffect(() => {
     const favoriteFoods = JSON.parse(localStorage.getItem('favoriteRecipes'));
@@ -27,9 +40,6 @@ function FoodDetails() {
       setFavorite(heart);
     }
   }, [foodId]);
-
-  const TWENTY = 20;
-  const [ingredients, measures] = ingredientList(TWENTY, food);
 
   const isDone = () => {
     const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
@@ -83,11 +93,18 @@ function FoodDetails() {
 
       <p>Ingredients</p>
       <ul>
-        {ingredients.map((ingredient, index) => (
-          <li data-testid={ `${index}-ingredient-name-and-measure` } key={ index }>
-            {`${ingredient} - ${measures[index]}`}
-          </li>
-        ))}
+        {!ingredients ? (
+          <Loading />
+        ) : (
+          ingredients.map((ingredient, index) => (
+            <li
+              data-testid={ `${index}-ingredient-name-and-measure` }
+              key={ index }
+            >
+              {`${ingredient} - ${measures[index]}`}
+            </li>
+          ))
+        )}
       </ul>
       <p data-testid="instructions">{food.strInstructions}</p>
       <iframe
