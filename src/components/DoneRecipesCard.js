@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-// import ShareButton from './ShareButton';
 import shareIcon from '../images/shareIcon.svg';
 
 function DoneRecipesCard({ value, index, share, shareButton }) {
