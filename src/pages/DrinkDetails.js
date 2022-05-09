@@ -13,9 +13,21 @@ function DrinkDetails() {
   const [recommendations, setRecommendations] = useState([]);
   const [share, setShare] = useState(false);
   const [favorite, setFavorite] = useState(false);
+  const [ingredients, setIngredients] = useState([]);
+  const [measures, setMeasures] = useState([]);
 
   useEffect(() => {
-    fetchRecipes(drinkId, 'drinks').then((cocktail) => setDrink(cocktail));
+    const FIFTEEN = 15;
+    fetchRecipes(drinkId, 'drinks')
+      .then((cocktail) => {
+        setDrink(cocktail);
+        return ingredientList(FIFTEEN, cocktail);
+      })
+      .then(([allIngredients, allMeasures]) => {
+        setIngredients(allIngredients);
+        setMeasures(allMeasures);
+      });
+
     fetchRecommendations('meals').then((meal) => setRecommendations(meal));
   }, [drinkId]);
 
@@ -33,9 +45,6 @@ function DrinkDetails() {
     const isRecipeDone = doneRecipes?.some((recipe) => recipe.id === drinkId);
     return !isRecipeDone;
   };
-
-  const FIFTEEN = 15;
-  const [ingredients, measures] = ingredientList(FIFTEEN, drink);
 
   const isInProgress = () => {
     const inProgressRecipes = JSON.parse(

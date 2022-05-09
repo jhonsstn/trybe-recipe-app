@@ -2,8 +2,15 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { alreadyUsed, toggleIngredients } from '../services/detailsHelper';
 
-function IngredientCheckbox({ index, ingredient, measures, recipeId, id }) {
-  const [checked, setChecked] = useState(true);
+function IngredientCheckbox({
+  index,
+  ingredient,
+  measures,
+  recipeId,
+  id,
+  isDone,
+}) {
+  const [checked, setChecked] = useState(null);
 
   useEffect(() => {
     if (alreadyUsed(ingredient, recipeId, id)) {
@@ -22,9 +29,10 @@ function IngredientCheckbox({ index, ingredient, measures, recipeId, id }) {
       <input
         id={ `${index}-checkbox-ingredient` }
         type="checkbox"
-        checked={ checked }
+        defaultChecked={ checked }
         onClick={ () => {
           toggleIngredients(ingredient, recipeId, id);
+          isDone();
           if (alreadyUsed(ingredient, recipeId, id)) {
             setChecked(true);
           } else {
@@ -41,6 +49,7 @@ IngredientCheckbox.propTypes = {
   id: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   ingredient: PropTypes.string.isRequired,
+  isDone: PropTypes.func.isRequired,
   measures: PropTypes.arrayOf(PropTypes.string).isRequired,
   recipeId: PropTypes.string.isRequired,
 };

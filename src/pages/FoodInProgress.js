@@ -3,11 +3,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import ShareButton from '../components/ShareButton';
 import WhiteHeartButton from '../components/WhiteHeartButton';
 import BlackHeartButton from '../components/BlackHeartButton';
-import {
-  // alreadyUsed,
-  ingredientList,
-  toggleFavorite,
-} from '../services/detailsHelper';
+import { ingredientList, toggleFavorite } from '../services/detailsHelper';
 import { fetchRecipes } from '../services/apiHelper';
 import IngredientCheckbox from '../components/IngredientCheckbox';
 import Loading from '../components/Loading';
@@ -16,11 +12,11 @@ function FoodInProgress() {
   const { foodId } = useParams();
   const history = useHistory();
   const [food, setFood] = useState({});
-
   const [share, setShare] = useState(false);
   const [favorite, setFavorite] = useState(false);
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
+  const [done, setDone] = useState(true);
 
   useEffect(() => {
     const TWENTY = 20;
@@ -29,9 +25,9 @@ function FoodInProgress() {
         setFood(meal);
         return ingredientList(TWENTY, meal);
       })
-      .then(([ing, mea]) => {
-        setIngredients(ing);
-        setMeasures(mea);
+      .then(([allIngredients, allMeasures]) => {
+        setIngredients(allIngredients);
+        setMeasures(allMeasures);
       });
   }, [foodId]);
 
@@ -49,6 +45,17 @@ function FoodInProgress() {
     await navigator.clipboard.writeText(recipeLink);
 
     setShare(true);
+  };
+
+  const isDone = () => {
+    const inProgressRecipes = JSON.parse(
+      localStorage.getItem('inProgressRecipes'),
+    );
+    if (inProgressRecipes.meals[foodId].length === ingredients.length) {
+      setDone(false);
+    } else {
+      setDone(true);
+    }
   };
 
   return (
@@ -89,6 +96,7 @@ function FoodInProgress() {
               measures={ measures }
               recipeId={ foodId }
               id="meal"
+              isDone={ isDone }
             />
           ))
         )}
@@ -99,7 +107,8 @@ function FoodInProgress() {
         type="button"
         data-testid="finish-recipe-btn"
         style={ { position: 'fixed', bottom: '0px' } }
-        onClick={ () => history.push(`/foods/${foodId}/in-progress`) }
+        disabled={ done }
+        onClick={ () => history.push('/done-recipes') }
       >
         Finish Recipe
       </button>
