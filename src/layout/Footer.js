@@ -5,7 +5,11 @@ import MealButton from '../components/MealButton';
 
 function Footer() {
   return (
-    <footer data-testid="footer" style={ { position: 'fixed', bottom: 0 } }>
+    <footer
+      className="py-1 w-screen flex justify-evenly bg-orange-400"
+      data-testid="footer"
+      style={ { position: 'fixed', bottom: 0 } }
+    >
       <DrinkButton />
       <ExploreButton />
       <MealButton />

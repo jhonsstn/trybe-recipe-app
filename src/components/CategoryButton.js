@@ -57,6 +57,7 @@ function Button({ strCategory }) {
 
   return (
     <button
+      className="bg-orange-200 text-sm py-0.5 px-2 rounded-md m-0.5"
       data-testid={ `${strCategory}-category-filter` }
       type="button"
       onClick={ () => setCategoryMeals(strCategory) }

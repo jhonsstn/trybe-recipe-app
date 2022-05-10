@@ -116,18 +116,17 @@ function FoodDetails() {
         data-testid="video"
         allowFullScreen
       />
-      <div style={ { display: 'flex', overflowY: 'scroll' } }>
+      <div className="flex overflow-scroll">
         {recommendations.map((recommendation, index) => {
           const FIVE = 5;
           if (index <= FIVE) {
             return (
               <div
-                style={ { width: '180px' } }
                 key={ index }
                 data-testid={ `${index}-recomendation-card` }
+                className="min-w-[calc(100vw-50%)]"
               >
                 <img
-                  style={ { width: '180px', height: '180px' } }
                   src={ recommendation.strDrinkThumb }
                   alt={ recommendation.strDrink }
                 />

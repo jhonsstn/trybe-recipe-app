@@ -27,6 +27,7 @@ function IngredientCheckbox({
       data-testid={ `${index}-ingredient-step` }
     >
       <input
+        style={ { textDecoration: 'none solid rgb(0,0,0)' } }
         id={ `${index}-checkbox-ingredient` }
         type="checkbox"
         defaultChecked={ checked }

@@ -29,10 +29,15 @@ function Login({ history }) {
   }, [password, email]);
 
   return (
-    <form onSubmit={ handleSubmit }>
-      <label htmlFor="email">
+    <form
+      className="text-lg  flex flex-col
+       justify-center items-center py-7 bg-orange-300"
+      onSubmit={ handleSubmit }
+    >
+      <label htmlFor="email" className="flex justify-center items-center">
         Email:
         <input
+          className="rounded-lg"
           data-testid="email-input"
           type="email"
           id="email"
@@ -45,6 +50,7 @@ function Login({ history }) {
       <label htmlFor="password">
         Senha:
         <input
+          className="rounded-lg"
           data-testid="password-input"
           type="number"
           id="password"
@@ -54,7 +60,12 @@ function Login({ history }) {
           onChange={ ({ target }) => setPassword(target.value) }
         />
       </label>
-      <button data-testid="login-submit-btn" type="submit" disabled={ btnStatus }>
+      <button
+        className="px-2 rounded-lg bg-orange-700 text-orange-50"
+        data-testid="login-submit-btn"
+        type="submit"
+        disabled={ btnStatus }
+      >
         Login
       </button>
     </form>

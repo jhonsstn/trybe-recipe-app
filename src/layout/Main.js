@@ -17,7 +17,7 @@ function Main({ children }) {
   };
 
   return (
-    <main>
+    <main className="bg-orange-50 flex flex-col items-center">
       {renderSearchBar()}
       {renderCategories()}
       {children}

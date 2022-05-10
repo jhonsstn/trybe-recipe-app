@@ -66,15 +66,18 @@ function DrinkDetails() {
   };
 
   return (
-    <div>
+    <div className="p-1 flex flex-col">
       <img
         width="100%"
         data-testid="recipe-photo"
         src={ drink.strDrinkThumb }
         alt={ drink.idDrink }
       />
-      <div style={ { display: 'flex' } }>
-        <h1 data-testid="recipe-title">{drink.strDrink}</h1>
+      {/* <div style={ { display: 'flex' } }> */}
+      <div className="py-4 flex flex-row justify-evenly align-middle bg-slate-400">
+        <h1 className="pw-0" data-testid="recipe-title">
+          {drink.strDrink}
+        </h1>
         <div>
           <button type="button" onClick={ shareButton }>
             <ShareButton />
@@ -104,18 +107,17 @@ function DrinkDetails() {
         ))}
       </ul>
       <p data-testid="instructions">{drink.strInstructions}</p>
-      <div style={ { display: 'flex', overflowY: 'scroll' } }>
+      <div className="flex overflow-scroll">
         {recommendations.map((recommendation, index) => {
           const FIVE = 5;
           if (index <= FIVE) {
             return (
               <div
-                style={ { width: '180px' } }
+                className="min-w-[calc(100vw-50%)]"
                 key={ index }
                 data-testid={ `${index}-recomendation-card` }
               >
                 <img
-                  style={ { width: '180px', height: '180px' } }
                   src={ recommendation.strMealThumb }
                   alt={ recommendation.strMeal }
                 />
