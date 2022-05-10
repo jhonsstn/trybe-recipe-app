@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DoneRecipesCard from '../components/DoneRecipesCard';
+import Header from '../layout/Header';
+import Main from '../layout/Main';
 
 function DoneRecipes() {
   const [filter, setFilter] = useState('all');
@@ -37,33 +39,38 @@ function DoneRecipes() {
   };
 
   return (
-    <div>
-      <button
-        type="button"
-        data-testid="filter-by-all-btn"
-        onClick={ () => setFilter('all') }
-        name="all"
-      >
-        All
-      </button>
-      <button
-        type="button"
-        data-testid="filter-by-food-btn"
-        onClick={ () => setFilter('food') }
-        name="food"
-      >
-        Food
-      </button>
-      <button
-        type="button"
-        data-testid="filter-by-drink-btn"
-        onClick={ () => setFilter('drink') }
-        name="drink"
-      >
-        Drink
-      </button>
-      {!doneRecipes ? 'carregando' : renderCards(doneRecipes)}
-    </div>
+    <>
+      <Header title="Done Recipes" />
+      <Main>
+        <div>
+          <button
+            type="button"
+            data-testid="filter-by-all-btn"
+            onClick={ () => setFilter('all') }
+            name="all"
+          >
+            All
+          </button>
+          <button
+            type="button"
+            data-testid="filter-by-food-btn"
+            onClick={ () => setFilter('food') }
+            name="food"
+          >
+            Food
+          </button>
+          <button
+            type="button"
+            data-testid="filter-by-drink-btn"
+            onClick={ () => setFilter('drink') }
+            name="drink"
+          >
+            Drink
+          </button>
+          {!doneRecipes ? 'carregando' : renderCards(doneRecipes)}
+        </div>
+      </Main>
+    </>
   );
 }
 
