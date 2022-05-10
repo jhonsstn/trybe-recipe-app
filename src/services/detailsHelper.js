@@ -29,14 +29,15 @@ const removeRecipe = (recipeId, setFavorite) => {
 
 const insertRecipe = (recipeList, id, setFavorite) => {
   const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+  console.log(recipeList);
   favoriteRecipes.push({
-    id: recipeList[`${id === 'meal' ? 'idMeal' : 'idDrink'}`],
-    type: id === 'meal' ? 'food' : 'drink',
+    id: recipeList[`${id === 'food' ? 'idMeal' : 'idDrink'}`],
+    type: id === 'food' ? 'food' : 'drink',
     nationality: recipeList.strArea || '',
     category: recipeList.strCategory || '',
     alcoholicOrNot: recipeList.strAlcoholic || '',
-    name: recipeList[`${id === 'meal' ? 'strMeal' : 'strDrink'}`],
-    image: recipeList[`${id === 'meal' ? 'strMealThumb' : 'strDrinkThumb'}`],
+    name: recipeList[`${id === 'food' ? 'strMeal' : 'strDrink'}`],
+    image: recipeList[`${id === 'food' ? 'strMealThumb' : 'strDrinkThumb'}`],
   });
   localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
   setFavorite(true);

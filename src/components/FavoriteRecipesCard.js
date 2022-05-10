@@ -1,10 +1,30 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import shareIcon from '../images/shareIcon.svg';
+import { toggleFavorite } from '../services/detailsHelper';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
-function DoneRecipesCard({ recipe, index, share, shareButton }) {
+function FavoriteRecipesCard({
+  recipe,
+  index,
+  share,
+  shareButton,
+  setChanged,
+}) {
   const history = useHistory();
+  const [favorite, setFavorite] = useState(false);
+
+  useEffect(() => {
+    const favoriteFoods = JSON.parse(localStorage.getItem('favoriteRecipes'));
+
+    if (favoriteFoods) {
+      const heart = favoriteFoods.some((item) => item.id === recipe.id);
+      setFavorite(heart);
+    }
+  }, [recipe.id]);
+
   return (
     <div key={ index }>
       <button
@@ -31,12 +51,7 @@ function DoneRecipesCard({ recipe, index, share, shareButton }) {
       </button>
 
       <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
-      <h3>tags:</h3>
-      {recipe.tags.map((tag, i) => (
-        <span data-testid={ `${index}-${tag}-horizontal-tag` } key={ i }>
-          {tag}
-        </span>
-      ))}
+
       <button type="button" onClick={ () => shareButton(recipe.id, recipe.type) }>
         <img
           data-testid={ `${index}-horizontal-share-btn` }
@@ -45,14 +60,33 @@ function DoneRecipesCard({ recipe, index, share, shareButton }) {
         />
         {share && 'Link copied!'}
       </button>
+      <button
+        type="button"
+        onClick={ () => {
+          toggleFavorite(recipe.id, recipe, recipe.type, setFavorite);
+          setChanged((prev) => !prev);
+        } }
+      >
+        {favorite ? (
+          <img
+            data-testid={ `${index}-horizontal-favorite-btn` }
+            src={ blackHeartIcon }
+            alt="favorite black button"
+          />
+        ) : (
+          <img
+            data-testid={ `${index}-horizontal-favorite-btn` }
+            src={ whiteHeartIcon }
+            alt="favorite white button "
+          />
+        )}
+      </button>
     </div>
   );
 }
 
-DoneRecipesCard.propTypes = {
+FavoriteRecipesCard.propTypes = {
   index: PropTypes.number.isRequired,
-  share: PropTypes.bool.isRequired,
-  shareButton: PropTypes.func.isRequired,
   recipe: PropTypes.shape({
     alcoholicOrNot: PropTypes.string,
     category: PropTypes.string,
@@ -61,9 +95,14 @@ DoneRecipesCard.propTypes = {
     image: PropTypes.string,
     name: PropTypes.string,
     nationality: PropTypes.string,
-    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    tags: PropTypes.shape({
+      map: PropTypes.func,
+    }),
     type: PropTypes.string,
   }).isRequired,
+  setChanged: PropTypes.func.isRequired,
+  share: PropTypes.bool.isRequired,
+  shareButton: PropTypes.func.isRequired,
 };
 
-export default DoneRecipesCard;
+export default FavoriteRecipesCard;
