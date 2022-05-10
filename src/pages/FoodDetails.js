@@ -84,7 +84,7 @@ function FoodDetails() {
         </div>
         <button
           type="button"
-          onClick={ () => toggleFavorite(foodId, food, 'meal', setFavorite) }
+          onClick={ () => toggleFavorite(foodId, food, 'food', setFavorite) }
         >
           {favorite ? <BlackHeartButton /> : <WhiteHeartButton />}
         </button>

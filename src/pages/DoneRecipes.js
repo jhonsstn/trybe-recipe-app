@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DoneRecipesCard from '../components/DoneRecipesCard';
+import Loading from '../components/Loading';
 import Header from '../layout/Header';
 import Main from '../layout/Main';
 
@@ -27,10 +28,10 @@ function DoneRecipes() {
   const renderCards = (allRecipes) => {
     const filteredRecipes = recipesFilter(allRecipes);
 
-    return filteredRecipes.map((value, index) => (
+    return filteredRecipes.map((recipe, index) => (
       <DoneRecipesCard
         key={ index }
-        value={ value }
+        recipe={ recipe }
         index={ index }
         share={ share }
         shareButton={ shareButton }
@@ -67,7 +68,7 @@ function DoneRecipes() {
           >
             Drink
           </button>
-          {!doneRecipes ? 'carregando' : renderCards(doneRecipes)}
+          {!doneRecipes ? <Loading /> : renderCards(doneRecipes)}
         </div>
       </Main>
     </>
