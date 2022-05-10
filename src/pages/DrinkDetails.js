@@ -66,15 +66,18 @@ function DrinkDetails() {
   };
 
   return (
-    <div>
+    <div className="p-1 flex flex-col">
       <img
         width="100%"
         data-testid="recipe-photo"
         src={ drink.strDrinkThumb }
         alt={ drink.idDrink }
       />
-      <div style={ { display: 'flex' } }>
-        <h1 data-testid="recipe-title">{drink.strDrink}</h1>
+      {/* <div style={ { display: 'flex' } }> */}
+      <div className="py-4 flex flex-row justify-evenly align-middle bg-slate-400">
+        <h1 className="pw-0" data-testid="recipe-title">
+          {drink.strDrink}
+        </h1>
         <div>
           <button type="button" onClick={ shareButton }>
             <ShareButton />
