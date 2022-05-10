@@ -29,7 +29,11 @@ function Login({ history }) {
   }, [password, email]);
 
   return (
-    <form onSubmit={ handleSubmit }>
+    <form
+      className="text-2xl  flex flex-col
+       justify-center items-center "
+      onSubmit={ handleSubmit }
+    >
       <label htmlFor="email">
         Email:
         <input

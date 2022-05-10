@@ -31,9 +31,11 @@ function Header({ title }) {
   };
 
   return (
-    <header>
+    <header className="flex justify-evenly bg-orange-400 items-center py-1">
       {renderProfileButton()}
-      <h3 data-testid="page-title">{title}</h3>
+      <h3 data-testid="page-title" className="font-light my-auto">
+        {title}
+      </h3>
       {renderSearchButton()}
     </header>
   );

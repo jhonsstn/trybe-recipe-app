@@ -5,11 +5,7 @@ import { Context } from '../context/AppContext';
 function SearchIcon() {
   const { setSearchBarStatus } = useContext(Context);
   return (
-    <button
-      style={ { border: 'none', backgroundColor: 'white' } }
-      type="button"
-      onClick={ () => setSearchBarStatus((prev) => !prev) }
-    >
+    <button type="button" onClick={ () => setSearchBarStatus((prev) => !prev) }>
       <img data-testid="search-top-btn" src={ searchIcon } alt="Ícone de Busca" />
     </button>
   );

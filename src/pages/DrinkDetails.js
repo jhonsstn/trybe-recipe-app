@@ -104,18 +104,17 @@ function DrinkDetails() {
         ))}
       </ul>
       <p data-testid="instructions">{drink.strInstructions}</p>
-      <div style={ { display: 'flex', overflowY: 'scroll' } }>
+      <div className="flex overflow-scroll">
         {recommendations.map((recommendation, index) => {
           const FIVE = 5;
           if (index <= FIVE) {
             return (
               <div
-                style={ { width: '180px' } }
+                className="min-w-[calc(100vw-50%)]"
                 key={ index }
                 data-testid={ `${index}-recomendation-card` }
               >
                 <img
-                  style={ { width: '180px', height: '180px' } }
                   src={ recommendation.strMealThumb }
                   alt={ recommendation.strMeal }
                 />
