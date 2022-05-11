@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
+import bgImage from '../images/image.png';
 
 function Login({ history }) {
   const [email, setEmail] = useState('');
@@ -8,6 +9,12 @@ function Login({ history }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!localStorage.getItem('mealsToken')) {
+      localStorage.setItem('mealsToken', '1');
+    }
+    if (!localStorage.getItem('cocktailsToken')) {
+      localStorage.setItem('cocktailsToken', '1');
+    }
     localStorage.setItem('user', JSON.stringify({ email }));
     history.push('/foods');
   };
@@ -29,46 +36,64 @@ function Login({ history }) {
   }, [password, email]);
 
   return (
-    <form
-      className="text-lg  flex flex-col
-       justify-center items-center py-7 bg-orange-300"
-      onSubmit={ handleSubmit }
+    <div
+      className="w-screen h-screen flex flex-col justify-center items-center"
+      style={ { backgroundImage: `url(${bgImage})`, backgroundSize: 'cover' } }
     >
-      <label htmlFor="email" className="flex justify-center items-center">
-        Email:
-        <input
-          className="rounded-lg"
-          data-testid="email-input"
-          type="email"
-          id="email"
-          name="email"
-          placeholder="Email"
-          value={ email }
-          onChange={ ({ target }) => setEmail(target.value) }
-        />
-      </label>
-      <label htmlFor="password">
-        Senha:
-        <input
-          className="rounded-lg"
-          data-testid="password-input"
-          type="number"
-          id="password"
-          name="password"
-          placeholder="Senha"
-          value={ password }
-          onChange={ ({ target }) => setPassword(target.value) }
-        />
-      </label>
-      <button
-        className="px-2 rounded-lg bg-orange-700 text-orange-50"
-        data-testid="login-submit-btn"
-        type="submit"
-        disabled={ btnStatus }
+      <div
+        className="py-7 bg-orange-400 rounded-md shadow-2xl
+        px-8 pt-6 pb-8 mb-4"
       >
-        Login
-      </button>
-    </form>
+        <h1 className="font-dancing font-bold text-5xl text-center pb-2 ">
+          Try Recipes
+        </h1>
+        <form
+          className="text-lg  flex flex-col
+        justify-center items-center "
+          onSubmit={ handleSubmit }
+        >
+          <label htmlFor="email" className="flex flex-col items-start">
+            Email:
+            <input
+              className="pl-1 shadow text-md border
+          rounded-sm h-8 w-52 bg-white
+          placeholder:text-sm placeholder:text-orange-300
+          placeholder:pl-1"
+              data-testid="email-input"
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Ex.: ada.lovelace@betrybe.com"
+              value={ email }
+              onChange={ ({ target }) => setEmail(target.value) }
+            />
+          </label>
+          <label htmlFor="password" className="flex flex-col items-start">
+            Senha:
+            <input
+              className="pl-1 shadow text-md border rounded-sm h-8 w-52 bg-white
+          placeholder:text-sm placeholder:text-orange-300 placeholder:pl-1"
+              data-testid="password-input"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Sua senha"
+              value={ password }
+              onChange={ ({ target }) => setPassword(target.value) }
+            />
+          </label>
+          <button
+            className="mt-6 px-4 py-0.5 rounded-sm bg-orange-700
+        text-orange-50 hover:bg-orange-500 focus:bg-orange-500"
+            data-testid="login-submit-btn"
+            type="submit"
+            disabled={ btnStatus }
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
 

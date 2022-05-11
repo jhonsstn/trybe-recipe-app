@@ -19,8 +19,11 @@ function SearchBar() {
   };
 
   return (
-    <form onSubmit={ handleSubmit }>
+    <form className="flex flex-col items-center" onSubmit={ handleSubmit }>
       <input
+        className="mt-4 mb-2 w-[200px] rounded-sm h-10
+        border-2 border-orange-700 placeholder:pl-1
+        placeholder:text-orange-300 text-lato"
         data-testid="search-input"
         type="text"
         id="search"
@@ -29,8 +32,9 @@ function SearchBar() {
         placeholder="Search Recipe"
       />
       <div className="radio">
-        <label htmlFor="ingredient">
+        <label className="px-1" htmlFor="ingredient">
           <input
+            className="mr-0.5"
             data-testid="ingredient-search-radio"
             type="radio"
             id="ingredient"
@@ -39,8 +43,9 @@ function SearchBar() {
           />
           Ingredient
         </label>
-        <label htmlFor="name">
+        <label className="px-1" htmlFor="name">
           <input
+            className="mr-0.5"
             data-testid="name-search-radio"
             type="radio"
             id="name"
@@ -49,8 +54,9 @@ function SearchBar() {
           />
           Name
         </label>
-        <label htmlFor="first-letter">
+        <label className="px-1" htmlFor="first-letter">
           <input
+            className="mr-0.5"
             data-testid="first-letter-search-radio"
             type="radio"
             id="first-letter"
@@ -60,7 +66,12 @@ function SearchBar() {
           First Letter
         </label>
       </div>
-      <button data-testid="exec-search-btn" type="submit">
+      <button
+        className="w-36 mt-2 mb-6  px-2 py-2 rounded-sm bg-orange-700
+        text-orange-50 hover:bg-orange-500 focus:bg-orange-500"
+        data-testid="exec-search-btn"
+        type="submit"
+      >
         Search
       </button>
     </form>

@@ -4,6 +4,7 @@ module.exports = {
     extend: {
       fontFamily: {
         lato: ['Lato', 'sans-serif'],
+        dancing: ['Dancing Script', 'cursive'],
       },
     },
   },
