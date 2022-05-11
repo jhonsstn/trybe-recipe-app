@@ -16,7 +16,7 @@ function DrinkInProgress() {
   const [favorite, setFavorite] = useState(false);
   const [ingredients, setIngredients] = useState([]);
   const [measures, setMeasures] = useState([]);
-  const [done, setDone] = useState(true);
+  const [finished, setFinished] = useState(true);
 
   useEffect(() => {
     const FIFTEEN = 15;
@@ -52,10 +52,43 @@ function DrinkInProgress() {
       localStorage.getItem('inProgressRecipes'),
     );
     if (inProgressRecipes.cocktails[drinkId].length === ingredients.length) {
-      setDone(false);
+      setFinished(false);
     } else {
-      setDone(true);
+      setFinished(true);
     }
+  };
+
+  const setDone = () => {
+    const inProgressRecipes = JSON.parse(
+      localStorage.getItem('inProgressRecipes'),
+    );
+    const doneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+
+    console.log(drink);
+
+    doneRecipes.push({
+      id: drink.idDrink,
+      type: 'drink',
+      nationality: '',
+      category: drink.strCategory,
+      alcoholicOrNot: drink.strAlcoholic,
+      name: drink.strDrink,
+      image: drink.strDrinkThumb,
+      doneDate: new Date().toLocaleDateString(),
+      tags: drink.strTags || [],
+    });
+
+    localStorage.setItem('doneRecipes', JSON.stringify(doneRecipes));
+    console.log(inProgressRecipes.cocktails[drinkId]);
+
+    delete inProgressRecipes.cocktails[drinkId];
+
+    localStorage.setItem(
+      'inProgressRecipes',
+      JSON.stringify(inProgressRecipes),
+    );
+
+    history.push('/done-recipes');
   };
 
   return (
@@ -112,8 +145,8 @@ function DrinkInProgress() {
         type="button"
         data-testid="finish-recipe-btn"
         style={ { position: 'fixed', bottom: '0px' } }
-        disabled={ done }
-        onClick={ () => history.push('/done-recipes') }
+        disabled={ finished }
+        onClick={ () => setDone() }
       >
         Finish Recipe
       </button>

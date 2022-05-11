@@ -33,7 +33,7 @@ function Categories() {
   };
 
   return (
-    <div className="flex flex-wrap w-[calc(100vw-30px)] mt-1 mb-2 justify-center">
+    <div className="flex flex-wrap w-[calc(100vw-30px)] p-4 justify-center">
       <button
         className="bg-orange-200 text-sm py-0.5 px-2 rounded-md m-0.5"
         data-testid="All-category-filter"

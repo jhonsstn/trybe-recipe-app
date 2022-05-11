@@ -10,12 +10,6 @@ function AppContext({ children }) {
   const [category, setCategory] = useState({});
 
   useEffect(() => {
-    if (!localStorage.getItem('mealsToken')) {
-      localStorage.setItem('mealsToken', '1');
-    }
-    if (!localStorage.getItem('cocktailsToken')) {
-      localStorage.setItem('cocktailsToken', '1');
-    }
     if (!localStorage.getItem('favoriteRecipes')) {
       localStorage.setItem('favoriteRecipes', JSON.stringify([]));
     }
