@@ -13,9 +13,10 @@ function Main({ children }) {
   };
 
   const renderCategories = () => {
-    if (!searchBarStatus && pathname !== '/explore') return <Categories />;
+    if (searchBarStatus) return null;
+    if (pathname === '/explore' || pathname === '/done-recipes') return null;
+    return <Categories />;
   };
-
   return (
     <main className="bg-orange-50 flex flex-col items-center">
       {renderSearchBar()}
