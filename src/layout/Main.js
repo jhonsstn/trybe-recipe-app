@@ -20,6 +20,9 @@ function Main({ children }) {
       || pathname === '/profile'
       || pathname === '/explore/foods'
       || pathname === '/explore/drinks'
+      || pathname === '/explore/drinks/ingredients'
+      || pathname === '/explore/foods/ingredients'
+      || pathname === '/explore/foods/nationalities'
     ) {
       return null;
     }
