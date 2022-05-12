@@ -18,7 +18,11 @@ function Main({ children }) {
       pathname === '/explore'
       || pathname === '/done-recipes'
       || pathname === '/profile'
-    ) { return null; }
+      || pathname === '/explore/foods'
+      || pathname === '/explore/drinks'
+    ) {
+      return null;
+    }
     return <Categories />;
   };
   return (
