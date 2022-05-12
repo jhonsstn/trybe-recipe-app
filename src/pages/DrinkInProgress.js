@@ -75,7 +75,7 @@ function DrinkInProgress() {
       name: drink.strDrink,
       image: drink.strDrinkThumb,
       doneDate: new Date().toLocaleDateString(),
-      tags: drink.strTags || [],
+      tags: drink.strTags?.split(', ') || [],
     });
 
     localStorage.setItem('doneRecipes', JSON.stringify(doneRecipes));

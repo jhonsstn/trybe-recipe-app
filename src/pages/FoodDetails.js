@@ -67,20 +67,31 @@ function FoodDetails() {
   };
 
   return (
-    <div>
+    <div className="bg-orange-50 relative">
       <img
         width="100%"
         data-testid="recipe-photo"
         src={ food.strMealThumb }
         alt={ food.idMeal }
       />
-      <div style={ { display: 'flex' } }>
-        <h1 data-testid="recipe-title">{food.strMeal}</h1>
+
+      <h1 className="ml-4 mt-4 text-4xl" data-testid="recipe-title">
+        {food.strMeal}
+      </h1>
+
+      <div className="fixed right-2 top-2 bg-orange-400 p-2 rounded-md relativo">
         <div>
           <button type="button" onClick={ shareButton }>
             <ShareButton />
           </button>
-          {share && <p>Link copied!</p>}
+          {share && (
+            <span
+              className="flex justify-center text-black absolute top-2 right-11
+            bg-orange-50 w-24 rounded-lg"
+            >
+              Link copied!
+            </span>
+          )}
         </div>
         <button
           type="button"
@@ -89,15 +100,18 @@ function FoodDetails() {
           {favorite ? <BlackHeartButton /> : <WhiteHeartButton />}
         </button>
       </div>
-      <p data-testid="recipe-category">{food.strCategory}</p>
+      <p className="px-4" data-testid="recipe-category">
+        {food.strCategory}
+      </p>
 
-      <p>Ingredients</p>
-      <ul>
+      <p className="ml-4">Ingredients</p>
+      <ul className="ml-10">
         {!ingredients ? (
           <Loading />
         ) : (
           ingredients.map((ingredient, index) => (
             <li
+              className="list-disc"
               data-testid={ `${index}-ingredient-name-and-measure` }
               key={ index }
             >
@@ -106,7 +120,9 @@ function FoodDetails() {
           ))
         )}
       </ul>
-      <p data-testid="instructions">{food.strInstructions}</p>
+      <p className="ml-4" data-testid="instructions">
+        {food.strInstructions}
+      </p>
       <iframe
         width="100%"
         height="230px"

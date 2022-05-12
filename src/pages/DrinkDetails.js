@@ -66,22 +66,29 @@ function DrinkDetails() {
   };
 
   return (
-    <div className="p-1 flex flex-col">
+    <div className="bg-orange-50 relative">
       <img
         width="100%"
         data-testid="recipe-photo"
         src={ drink.strDrinkThumb }
         alt={ drink.idDrink }
       />
-      {/* <div style={ { display: 'flex' } }> */}
-      <div className="py-4 flex flex-row justify-evenly align-middle bg-slate-400">
-        <h1 className="pw-0" data-testid="recipe-title">
-          {drink.strDrink}
-        </h1>
+
+      <h1 className="ml-4 mt-4 text-4xl" data-testid="recipe-title">
+        {drink.strDrink}
+      </h1>
+      <div className="fixed right-2 top-2 bg-orange-400 p-2 rounded-md relativo">
         <div>
           <button type="button" onClick={ shareButton }>
             <ShareButton />
-            {share && 'Link copied!'}
+            {share && (
+              <span
+                className="flex justify-center text-black absolute top-2 right-11
+            bg-orange-50 w-24 rounded-lg"
+              >
+                Link copied!
+              </span>
+            )}
           </button>
         </div>
         <button
@@ -90,23 +97,32 @@ function DrinkDetails() {
         >
           {favorite ? <BlackHeartButton /> : <WhiteHeartButton />}
         </button>
-
-        {drink.strAlcoholic === 'Alcoholic' ? (
-          <p data-testid="recipe-category">{drink.strAlcoholic}</p>
-        ) : (
-          <p data-testid="recipe-category">{drink.strCategory}</p>
-        )}
       </div>
+      {drink.strAlcoholic === 'Alcoholic' ? (
+        <p className="px-4" data-testid="recipe-category">
+          {drink.strAlcoholic}
+        </p>
+      ) : (
+        <p className="px-4" data-testid="recipe-category">
+          {drink.strCategory}
+        </p>
+      )}
 
-      <p>Ingredients</p>
-      <ul>
+      <p className="ml-4">Ingredients</p>
+      <ul className="ml-10">
         {ingredients.map((ingredient, index) => (
-          <li data-testid={ `${index}-ingredient-name-and-measure` } key={ index }>
+          <li
+            className="list-disc"
+            data-testid={ `${index}-ingredient-name-and-measure` }
+            key={ index }
+          >
             {`${ingredient} - ${measures[index]}`}
           </li>
         ))}
       </ul>
-      <p data-testid="instructions">{drink.strInstructions}</p>
+      <p className="ml-4" data-testid="instructions">
+        {drink.strInstructions}
+      </p>
       <div className="flex overflow-scroll">
         {recommendations.map((recommendation, index) => {
           const FIVE = 5;
