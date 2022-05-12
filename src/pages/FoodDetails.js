@@ -6,6 +6,7 @@ import BlackHeartButton from '../components/BlackHeartButton';
 import { ingredientList, toggleFavorite } from '../services/detailsHelper';
 import { fetchRecipes, fetchRecommendations } from '../services/apiHelper';
 import Loading from '../components/Loading';
+import RecommendationsCard from '../components/RecommendationsCard';
 
 function FoodDetails() {
   const { foodId } = useParams();
@@ -137,20 +138,11 @@ function FoodDetails() {
           const FIVE = 5;
           if (index <= FIVE) {
             return (
-              <div
+              <RecommendationsCard
                 key={ index }
-                data-testid={ `${index}-recomendation-card` }
-                className="min-w-[calc(100vw-50%)]"
-              >
-                <img
-                  src={ recommendation.strDrinkThumb }
-                  alt={ recommendation.strDrink }
-                />
-                <p>{recommendation.strCategory}</p>
-                <h3 data-testid={ `${index}-recomendation-title` }>
-                  {recommendation.strDrink}
-                </h3>
-              </div>
+                recommendation={ recommendation }
+                index={ index }
+              />
             );
           }
           return null;

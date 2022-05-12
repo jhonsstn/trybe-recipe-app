@@ -26,6 +26,7 @@ function AppContext({ children }) {
         JSON.stringify(inProgressRecipes),
       );
     }
+    localStorage.setItem('user', JSON.stringify({ email: '' }));
   }, []);
 
   const contextValue = {
