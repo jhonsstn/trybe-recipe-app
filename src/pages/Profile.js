@@ -9,8 +9,11 @@ function Profile() {
   const [email, setEmail] = useState('');
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    setEmail(user.email);
+    if (localStorage.getItem('user')) {
+      const user = JSON.parse(localStorage.getItem('user'));
+      console.log(user);
+      setEmail(user.email);
+    }
   }, []);
 
   const handleLogout = () => {
@@ -21,7 +24,7 @@ function Profile() {
     <>
       <Header title="Profile" />
       <Main>
-        <p data-testid="profile-email">{email}</p>
+        <p data-testid="profile-email">{`Email: ${email}`}</p>
 
         <button
           type="button"
