@@ -14,7 +14,11 @@ function Main({ children }) {
 
   const renderCategories = () => {
     if (searchBarStatus) return null;
-    if (pathname === '/explore' || pathname === '/done-recipes') return null;
+    if (
+      pathname === '/explore'
+      || pathname === '/done-recipes'
+      || pathname === '/profile'
+    ) { return null; }
     return <Categories />;
   };
   return (

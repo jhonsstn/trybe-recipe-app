@@ -73,7 +73,7 @@ function FoodInProgress() {
       name: food.strMeal,
       image: food.strMealThumb,
       doneDate: new Date().toLocaleDateString(),
-      tags: food.strTags.split(', ') || [],
+      tags: food.strTags ? food.strTags.split(', ') : [],
     });
 
     console.log(food);
