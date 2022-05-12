@@ -9,6 +9,22 @@ function Login({ history }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!localStorage.getItem('favoriteRecipes')) {
+      localStorage.setItem('favoriteRecipes', JSON.stringify([]));
+    }
+    if (!localStorage.getItem('doneRecipes')) {
+      localStorage.setItem('doneRecipes', JSON.stringify([]));
+    }
+    if (!localStorage.getItem('inProgressRecipes')) {
+      const inProgressRecipes = {
+        cocktails: {},
+        meals: {},
+      };
+      localStorage.setItem(
+        'inProgressRecipes',
+        JSON.stringify(inProgressRecipes),
+      );
+    }
     if (!localStorage.getItem('mealsToken')) {
       localStorage.setItem('mealsToken', '1');
     }
@@ -41,15 +57,15 @@ function Login({ history }) {
       style={ { backgroundImage: `url(${bgImage})`, backgroundSize: 'cover' } }
     >
       <div
-        className="py-7 bg-orange-400 rounded-md shadow-2xl
+        className="py-7 bg-orange-400 bg-opacity-90 rounded-md shadow-2xl
         px-8 pt-6 pb-8 mb-4"
       >
-        <h1 className="font-dancing font-bold text-5xl text-center pb-2 ">
+        <h1 className="font-dancing font-bold text-5xl text-center pb-2">
           Try Recipes
         </h1>
         <form
           className="text-lg  flex flex-col
-        justify-center items-center "
+        justify-center items-center"
           onSubmit={ handleSubmit }
         >
           <label htmlFor="email" className="flex flex-col items-start">
@@ -84,7 +100,7 @@ function Login({ history }) {
           </label>
           <button
             className="mt-6 px-4 py-0.5 rounded-sm bg-orange-700
-        text-orange-50 hover:bg-orange-500 focus:bg-orange-500"
+        text-orange-50 hover:bg-orange-500 focus:bg-orange-500 disabled:bg-orange-400"
             data-testid="login-submit-btn"
             type="submit"
             disabled={ btnStatus }
